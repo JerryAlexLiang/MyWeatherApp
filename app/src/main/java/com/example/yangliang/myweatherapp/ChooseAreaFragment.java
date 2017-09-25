@@ -125,9 +125,33 @@ public class ChooseAreaFragment extends Fragment implements AdapterView.OnItemCl
         } else if (currentLevel == LEVEL_CITY) {
             //如果当前是市级选项,则数据由市数组中获取，去查询区县
             selectedCity = cityList.get(position);
-            Toast.makeText(getContext(), "你所选的城市份是：" + selectedCity.getCityName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "你所选的城市是：" + selectedCity.getCityName(), Toast.LENGTH_SHORT).show();
             //查询选中市内所有的区县，优先从数据库查询，如果没有查询到再去服务器上查询
             queryCounties();
+        } else if (currentLevel == LEVEL_COUNTY) {
+            /*
+            String weatherId = countyList.get(position).getWeatherId();
+                    if (getActivity() instanceof MainActivity) {
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weather_id", weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+                    } else if (getActivity() instanceof WeatherActivity) {
+                        WeatherActivity activity = (WeatherActivity) getActivity();
+                        activity.drawerLayout.closeDrawers();
+                        activity.swipeRefresh.setRefreshing(true);
+                        activity.requestWeather(weatherId);
+                    }
+             */
+
+            County selectedCounty = countyList.get(position);
+            Toast.makeText(getContext(), "你所选的地区是：" + selectedCounty.getCountyName(), Toast.LENGTH_SHORT).show();
+
+            String weatherId = countyList.get(position).getWeatherId();
+            Intent intent = new Intent(getActivity(), WeatherActivity.class);
+            intent.putExtra("weather_id", weatherId);
+            startActivity(intent);
+            getActivity().finish();
         }
 
     }
