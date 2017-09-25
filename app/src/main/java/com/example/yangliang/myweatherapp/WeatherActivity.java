@@ -4,8 +4,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -60,6 +62,9 @@ public class WeatherActivity extends AppCompatActivity {
 
     private TextView sportText;
 
+    public SwipeRefreshLayout swipeRefresh;
+    private String weatherId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,22 @@ public class WeatherActivity extends AppCompatActivity {
         initView();
         //尝试从本地数据库中获取天气信息
         readDataByLocal();
+        //监听事件
+        initListener();
+    }
+
+    /**
+     * 初始化监听事件
+     */
+    private void initListener() {
+        //下拉刷新控件
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //服务器请求天气网络数据
+                requestWeather(weatherId);
+            }
+        });
     }
 
     /**
@@ -90,7 +111,6 @@ public class WeatherActivity extends AppCompatActivity {
     private void readDataByLocal() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = preferences.getString("weather", null);
-        String weatherId;
         if (weatherString != null) {
             //有缓存时直接从本地数据库读取数据，直接解析天气数据
             Weather weather = JsonParserUtility.handleWeatherResponse(weatherString);
@@ -181,6 +201,9 @@ public class WeatherActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息失败~", Toast.LENGTH_SHORT).show();
                         }
+                        //当请求结束，设置setRefreshing(false)表示刷新事件结束，并隐藏刷新进度条
+                        swipeRefresh.setRefreshing(false);
+                        Toast.makeText(WeatherActivity.this, "数据更新成功~", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -192,6 +215,8 @@ public class WeatherActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(WeatherActivity.this, "获取天气信息失败~", Toast.LENGTH_SHORT).show();
+                        //当请求结束，设置setRefreshing(false)表示刷新事件结束，并隐藏刷新进度条
+                        swipeRefresh.setRefreshing(false);
                     }
                 });
             }
@@ -267,5 +292,32 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText = (TextView) findViewById(R.id.car_wash_text);
         sportText = (TextView) findViewById(R.id.sport_text);
         bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
+        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        //设置下拉刷新进度条的颜色
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+    }
+
+    /**
+     * 返回键退出应用(连按两次)
+     */
+    private long waitTime = 2000;
+    private long touchTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN && KeyEvent.KEYCODE_BACK == keyCode) {
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - touchTime) >= waitTime) {
+                Toast.makeText(WeatherActivity.this, "再按一次退出应用", Toast.LENGTH_SHORT).show();
+                touchTime = currentTime;
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        } else if (KeyEvent.KEYCODE_HOME == keyCode) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

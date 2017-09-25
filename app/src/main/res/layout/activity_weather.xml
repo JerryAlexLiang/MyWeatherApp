@@ -13,35 +13,42 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
-    <ScrollView
-        android:id="@+id/weather_layout"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:scrollbars="none">
+        android:layout_height="match_parent">
 
-        <!--使用沉浸式状态栏，不管那种方法，系统状态栏已经成为布局的一部分
-        因此没有单独为它留出空间，添加android:fitsSystemWindows="true"
-        表示会为系统栏留出空间-->
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/weather_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-            <include layout="@layout/title_action_bar" />
+            <!--使用沉浸式状态栏，不管那种方法，系统状态栏已经成为布局的一部分
+            因此没有单独为它留出空间，添加android:fitsSystemWindows="true"
+            表示会为系统栏留出空间-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
 
-            <include layout="@layout/now_info" />
+                <include layout="@layout/title_action_bar" />
 
-            <include layout="@layout/forecast" />
+                <include layout="@layout/now_info" />
 
-            <include layout="@layout/aqi" />
+                <include layout="@layout/forecast" />
 
-            <include layout="@layout/suggestion" />
+                <include layout="@layout/aqi" />
 
-        </LinearLayout>
+                <include layout="@layout/suggestion" />
 
-    </ScrollView>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </FrameLayout>
