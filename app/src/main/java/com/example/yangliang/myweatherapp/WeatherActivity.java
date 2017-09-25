@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.yangliang.myweatherapp.gson.Forecast;
 import com.example.yangliang.myweatherapp.gson.Weather;
 import com.example.yangliang.myweatherapp.util.HttpUtil;
@@ -29,6 +31,8 @@ import okhttp3.Response;
  * 作者: liangyang
  */
 public class WeatherActivity extends AppCompatActivity {
+
+    private ImageView bingPicImg;
 
     private ScrollView weatherLayout;
 
@@ -87,6 +91,50 @@ public class WeatherActivity extends AppCompatActivity {
             requestWeather(weatherId);
         }
 
+        //有缓存时直接从本地数据库读取数据，直接加载背景图片
+        String bingPic = preferences.getString("bing_pic", null);
+        if (bingPic != null) {
+            Glide.with(this).load(bingPic).into(bingPicImg);
+        } else {
+            //无缓存时去服务器请求图片数据
+            loadBingPic();
+        }
+
+    }
+
+    /**
+     * 加载必应每日一图
+     * 注意在requestWeather()方法的最后，也要调用一下loadBingPic()
+     * 这样在每次请求天气信息的时候同时也会刷新背景图片
+     */
+    private void loadBingPic() {
+        String requestBingPic = "http://guolin.tech/api/bing_pic";
+        HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //获取网络JSON数据
+                final String bingPic = response.body().string();
+                //将获取到的数据存储在本地数据库SharedPreferences中
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
+                editor.putString("bing_pic", bingPic);
+                editor.apply();
+
+                //切换到主线程更新UI
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //加载背景图片
+                        Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);
+                    }
+                });
+            }
+        });
+
     }
 
     /**
@@ -135,7 +183,9 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
 
-
+        //注意在requestWeather()方法的最后，也要调用一下loadBingPic()
+        //这样在每次请求天气信息的时候同时也会刷新背景图片
+        loadBingPic();
     }
 
     /**
@@ -202,5 +252,6 @@ public class WeatherActivity extends AppCompatActivity {
         comfortText = (TextView) findViewById(R.id.comfort_text);
         carWashText = (TextView) findViewById(R.id.car_wash_text);
         sportText = (TextView) findViewById(R.id.sport_text);
+        bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
     }
 }

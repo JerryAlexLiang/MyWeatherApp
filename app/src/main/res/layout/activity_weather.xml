@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorPrimary">
+
+    <!--FrameLayout默认情况下会将控件放置在左上角，
+    所以ScrollView会完全覆盖住ImageView，使得ImageView成为布局的背景图片-->
+    <ImageView
+        android:id="@+id/bing_pic_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
 
     <ScrollView
         android:id="@+id/weather_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
 
             <include layout="@layout/title_action_bar" />
 
@@ -34,5 +41,4 @@
     </ScrollView>
 
 
-
-</LinearLayout>  
+</FrameLayout>
