@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,8 +42,6 @@ public class WeatherActivity extends AppCompatActivity {
 
     private ScrollView weatherLayout;
 
-    private Button navButton;
-
     private TextView titleCity;
 
     private TextView titleUpdateTime;
@@ -63,7 +63,12 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView sportText;
 
     public SwipeRefreshLayout swipeRefresh;
-    private String weatherId;
+
+    public DrawerLayout drawerLayout;
+
+    private Button navButton;
+
+    private String mWeatherId;
 
 
     @Override
@@ -80,7 +85,6 @@ public class WeatherActivity extends AppCompatActivity {
             //调用setStatusBarColor()方法将状态栏设置成透明色
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-
         setContentView(R.layout.activity_weather);
         //初始化控件
         initView();
@@ -99,7 +103,16 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 //服务器请求天气网络数据
-                requestWeather(weatherId);
+                requestWeather(mWeatherId);
+            }
+        });
+
+        //主页菜单点击事件
+        navButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //打开左侧滑动菜单
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
     }
@@ -114,15 +127,15 @@ public class WeatherActivity extends AppCompatActivity {
         if (weatherString != null) {
             //有缓存时直接从本地数据库读取数据，直接解析天气数据
             Weather weather = JsonParserUtility.handleWeatherResponse(weatherString);
-            weatherId = weather.basic.weatherId;
+            mWeatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
         } else {
             //无缓存时去服务器查询天气
-            weatherId = getIntent().getStringExtra("weather_id");
+            mWeatherId = getIntent().getStringExtra("weather_id");
             //请求数据时隐藏ScrollView
             weatherLayout.setVisibility(View.INVISIBLE);
             //服务器请求数据
-            requestWeather(weatherId);
+            requestWeather(mWeatherId);
         }
 
         //有缓存时直接从本地数据库读取数据，直接加载背景图片
@@ -176,7 +189,7 @@ public class WeatherActivity extends AppCompatActivity {
      *
      * @param weatherId
      */
-    private void requestWeather(String weatherId) {
+    public void requestWeather(String weatherId) {
         //和风天气API
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=ca200b5fb881484eab6616caa96d6922";
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
@@ -196,6 +209,7 @@ public class WeatherActivity extends AppCompatActivity {
                                     PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
                             editor.putString("weather", responseText);
                             editor.apply();
+                            mWeatherId = weather.basic.weatherId;
                             //并调用showWeatherInfo()方法来显示内容
                             showWeatherInfo(weather);
                         } else {
@@ -295,6 +309,8 @@ public class WeatherActivity extends AppCompatActivity {
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         //设置下拉刷新进度条的颜色
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navButton = (Button) findViewById(R.id.nav_button);
     }
 
     /**

@@ -129,29 +129,30 @@ public class ChooseAreaFragment extends Fragment implements AdapterView.OnItemCl
             //查询选中市内所有的区县，优先从数据库查询，如果没有查询到再去服务器上查询
             queryCounties();
         } else if (currentLevel == LEVEL_COUNTY) {
-            /*
-            String weatherId = countyList.get(position).getWeatherId();
-                    if (getActivity() instanceof MainActivity) {
-                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                        intent.putExtra("weather_id", weatherId);
-                        startActivity(intent);
-                        getActivity().finish();
-                    } else if (getActivity() instanceof WeatherActivity) {
-                        WeatherActivity activity = (WeatherActivity) getActivity();
-                        activity.drawerLayout.closeDrawers();
-                        activity.swipeRefresh.setRefreshing(true);
-                        activity.requestWeather(weatherId);
-                    }
-             */
-
             County selectedCounty = countyList.get(position);
             Toast.makeText(getContext(), "你所选的地区是：" + selectedCounty.getCountyName(), Toast.LENGTH_SHORT).show();
 
             String weatherId = countyList.get(position).getWeatherId();
-            Intent intent = new Intent(getActivity(), WeatherActivity.class);
-            intent.putExtra("weather_id", weatherId);
-            startActivity(intent);
-            getActivity().finish();
+
+            //根据ChooseAreaFragment的不同状态进行不同的逻辑处理
+            //instanceof关键字可以用来判断一个对象是否属于某个类的实例
+            if (getActivity() instanceof MainActivity) {
+                //碎片fragment在MainActivity当中，直接跳转到WeatherActivity
+                Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                intent.putExtra("weather_id", weatherId);
+                startActivity(intent);
+                getActivity().finish();
+            } else if (getActivity() instanceof WeatherActivity) {
+                //碎片fragment在WeatherActivity当中，不进行任何条转动作，只是进行新选城市的天气数据的请求操作
+                WeatherActivity activity = (WeatherActivity) getActivity();
+                //关闭左侧滑动菜单栏
+                activity.drawerLayout.closeDrawers();
+                //显示下拉刷新进度条
+                activity.swipeRefresh.setRefreshing(true);
+                //重新服务器请求数据
+                activity.requestWeather(weatherId);
+            }
+
         }
 
     }

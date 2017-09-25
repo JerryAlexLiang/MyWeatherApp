@@ -13,42 +13,59 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+    <!--DrawerLayout的第一个子控件用于主屏幕中显示的内容
+    第二个子控件用于作为滑动菜单中显示的内容（遍历省市县数据的碎片）-->
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:id="@+id/weather_layout"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:id="@+id/weather_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+                <!--使用沉浸式状态栏，不管那种方法，系统状态栏已经成为布局的一部分
+                因此没有单独为它留出空间，添加android:fitsSystemWindows="true"
+                表示会为系统栏留出空间-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/title_action_bar" />
+
+                    <include layout="@layout/now_info" />
+
+                    <include layout="@layout/forecast" />
+
+                    <include layout="@layout/aqi" />
+
+                    <include layout="@layout/suggestion" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <!--android:layout_gravity="start"必须添加-->
+        <fragment
+            android:id="@+id/choose_area_fragment"
+            android:name="com.example.yangliang.myweatherapp.ChooseAreaFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:scrollbars="none">
+            android:layout_gravity="start" />
 
-            <!--使用沉浸式状态栏，不管那种方法，系统状态栏已经成为布局的一部分
-            因此没有单独为它留出空间，添加android:fitsSystemWindows="true"
-            表示会为系统栏留出空间-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                android:orientation="vertical">
-
-                <include layout="@layout/title_action_bar" />
-
-                <include layout="@layout/now_info" />
-
-                <include layout="@layout/forecast" />
-
-                <include layout="@layout/aqi" />
-
-                <include layout="@layout/suggestion" />
-
-            </LinearLayout>
-
-        </ScrollView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </android.support.v4.widget.DrawerLayout>
 
 
 </FrameLayout>
