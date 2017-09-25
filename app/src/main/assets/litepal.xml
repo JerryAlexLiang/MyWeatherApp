@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<litepal>
+    <!--数据库名称-->
+    <dbname value="my_weather_app" />
+    <!--数据库版本-->
+    <version value="1" />
+    <!--将省市县三个实体列添加到映射列表中-->
+    <list>
+        <mapping class="com.example.yangliang.myweatherapp.db.Province" />
+        <mapping class="com.example.yangliang.myweatherapp.db.City" />
+        <mapping class="com.example.yangliang.myweatherapp.db.County" />
+    </list>
+    <!--最后，还要在清单文件中配置一下LitePalApplication-->
+</litepal>
