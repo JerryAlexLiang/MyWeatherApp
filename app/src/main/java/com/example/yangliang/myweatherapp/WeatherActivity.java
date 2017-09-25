@@ -1,6 +1,8 @@
 package com.example.yangliang.myweatherapp;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -62,6 +64,18 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Android5.0及以上系统支持用此简单方法实现沉浸式状态栏
+        //注意：还应在布局文件中相应位置添加android:fitsSystemWindows="true"来处理布局问题
+        if (Build.VERSION.SDK_INT >= 21) {
+            //得到当前活动的DecorView
+            View decorView = getWindow().getDecorView();
+            //改变系统UI的显示(活动的布局会显示在状态栏上面)
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            //调用setStatusBarColor()方法将状态栏设置成透明色
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+
         setContentView(R.layout.activity_weather);
         //初始化控件
         initView();

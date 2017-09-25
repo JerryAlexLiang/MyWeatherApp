@@ -20,6 +20,9 @@
         android:overScrollMode="never"
         android:scrollbars="none">
 
+        <!--使用沉浸式状态栏，不管那种方法，系统状态栏已经成为布局的一部分
+        因此没有单独为它留出空间，添加android:fitsSystemWindows="true"
+        表示会为系统栏留出空间-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
