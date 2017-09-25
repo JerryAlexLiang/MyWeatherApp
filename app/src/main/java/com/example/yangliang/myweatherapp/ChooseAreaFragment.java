@@ -119,11 +119,13 @@ public class ChooseAreaFragment extends Fragment implements AdapterView.OnItemCl
         if (currentLevel == LEVEL_PROVINCE) {
             //如果当前是省级选项,则数据由省数组中获取,去查询市
             selectedProvince = provinceList.get(position);
+            Toast.makeText(getContext(), "你所选的省份是：" + selectedProvince.getProvinceName(), Toast.LENGTH_SHORT).show();
             //查询选中省内所有的市，优先从数据库查询，如果没有查询到再去服务器上查询
             queryCities();
         } else if (currentLevel == LEVEL_CITY) {
             //如果当前是市级选项,则数据由市数组中获取，去查询区县
             selectedCity = cityList.get(position);
+            Toast.makeText(getContext(), "你所选的城市份是：" + selectedCity.getCityName(), Toast.LENGTH_SHORT).show();
             //查询选中市内所有的区县，优先从数据库查询，如果没有查询到再去服务器上查询
             queryCounties();
         }
