@@ -1,5 +1,6 @@
 package com.example.yangliang.myweatherapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.yangliang.myweatherapp.gson.Forecast;
 import com.example.yangliang.myweatherapp.gson.Weather;
+import com.example.yangliang.myweatherapp.service.AutoUpdateService;
 import com.example.yangliang.myweatherapp.util.HttpUtil;
 import com.example.yangliang.myweatherapp.util.JsonParserUtility;
 
@@ -242,7 +244,7 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     /**
-     * 处理并显示Weather实体类中的数据
+     * 处理并显示Weather实体类中的数据，并开启后台服务
      *
      * @param weather
      */
@@ -287,6 +289,11 @@ public class WeatherActivity extends AppCompatActivity {
         sportText.setText(sport);
         //设置完所有数据后，将ScrollView可见
         weatherLayout.setVisibility(View.VISIBLE);
+
+        //开启服务，实现后台定时更新天气功能
+        //这样，只要一旦选中了某个城市并成功更新天气后，AutoUpdateService就会一直在后台运行，实现每8小时更新一次天气数据
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
 
     }
 
