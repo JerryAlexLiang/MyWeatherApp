@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CoolWeather/CoolWeather.iml" filepath="$PROJECT_DIR$/CoolWeather/CoolWeather.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyWeatherApp.iml" filepath="$PROJECT_DIR$/MyWeatherApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

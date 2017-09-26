@@ -1,4 +1,4 @@
-package com.example.yangliang.myweatherapp;
+package com.example.yangliang.myweatherapp.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.yangliang.myweatherapp.R;
 import com.example.yangliang.myweatherapp.gson.Forecast;
 import com.example.yangliang.myweatherapp.gson.Weather;
 import com.example.yangliang.myweatherapp.service.AutoUpdateService;

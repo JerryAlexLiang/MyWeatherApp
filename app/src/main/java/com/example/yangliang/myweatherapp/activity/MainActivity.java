@@ -1,4 +1,4 @@
-package com.example.yangliang.myweatherapp;
+package com.example.yangliang.myweatherapp.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
+
+import com.example.yangliang.myweatherapp.R;
+
 /**
  * 创建日期：2017/9/25 on 下午5:05
  * 描述: 城市选择页面（碎片）

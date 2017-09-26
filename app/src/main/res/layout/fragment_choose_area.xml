@@ -5,7 +5,7 @@
     android:background="#ffffff"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.example.yangliang.myweatherapp.ChooseAreaFragment">
+    tools:context="com.example.yangliang.myweatherapp.fragment.ChooseAreaFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

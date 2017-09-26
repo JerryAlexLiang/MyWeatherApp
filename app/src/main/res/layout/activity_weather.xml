@@ -60,7 +60,7 @@
         <!--android:layout_gravity="start"必须添加-->
         <fragment
             android:id="@+id/choose_area_fragment"
-            android:name="com.example.yangliang.myweatherapp.ChooseAreaFragment"
+            android:name="com.example.yangliang.myweatherapp.fragment.ChooseAreaFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start" />

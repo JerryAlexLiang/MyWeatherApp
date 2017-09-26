@@ -45,7 +45,8 @@ public class AutoUpdateService extends Service {
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         //这是8小时的毫秒数，为不耗费过多的流量，将时间间隔定位8小时，
 //        int anHour = 8 * 60 * 60 * 1000;
-        int anHour = 60 * 60 * 1000;//一小时更新一次
+//        int anHour = 60 * 60 * 1000;//一小时更新一次
+        int anHour = (int) (0.5 * 60 * 60 * 1000);//半小时更新一次
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent i = new Intent(this, AutoUpdateService.class);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);

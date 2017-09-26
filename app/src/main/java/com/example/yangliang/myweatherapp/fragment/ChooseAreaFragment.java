@@ -1,4 +1,4 @@
-package com.example.yangliang.myweatherapp;
+package com.example.yangliang.myweatherapp.fragment;
 
 
 import android.app.ProgressDialog;
@@ -16,6 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yangliang.myweatherapp.R;
+import com.example.yangliang.myweatherapp.activity.MainActivity;
+import com.example.yangliang.myweatherapp.activity.WeatherActivity;
 import com.example.yangliang.myweatherapp.db.City;
 import com.example.yangliang.myweatherapp.db.County;
 import com.example.yangliang.myweatherapp.db.Province;

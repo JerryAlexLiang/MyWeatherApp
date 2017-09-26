@@ -8,7 +8,7 @@
     <!--碎片是不能直接显示在活动中的，需要手动添加-->
     <fragment
         android:id="@+id/choose_area_fragment"
-        android:name="com.example.yangliang.myweatherapp.ChooseAreaFragment"
+        android:name="com.example.yangliang.myweatherapp.fragment.ChooseAreaFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
